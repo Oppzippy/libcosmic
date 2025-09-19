@@ -373,8 +373,13 @@ pub struct State {
 impl State {
     /// Creates a new [`State`] for a [`Dropdown`].
     pub fn new() -> Self {
+        #[cfg(target_os = "linux")]
+        let icon = icon::from_name("pan-down-symbolic").size(16).handle();
+        #[cfg(not(target_os = "linux"))]
+        let icon = icon::bundled::pan_down_symbolic();
+
         Self {
-            icon: match icon::from_name("pan-down-symbolic").size(16).handle().data {
+            icon: match icon.data {
                 icon::Data::Name(named) => named
                     .path()
                     .filter(|path| path.extension().is_some_and(|ext| ext == OsStr::new("svg")))

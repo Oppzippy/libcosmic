@@ -104,7 +104,7 @@ where
                     .push(widget::text::heading(category.to_string()))
                     .push_maybe(match sort_state {
                         1 => Some(widget::icon::from_name("pan-up-symbolic").icon()),
-                        2 => Some(widget::icon::from_name("pan-down-symbolic").icon()),
+                        2 => Some(widget::icon::bundled::pan_down_symbolic().icon()),
                         _ => None,
                     })
                     .apply(container)
