@@ -3,6 +3,7 @@
 
 //! Lazily-generated SVG icon widget for Iced.
 
+pub(crate) mod bundled;
 mod named;
 use std::ffi::OsStr;
 use std::sync::Arc;
