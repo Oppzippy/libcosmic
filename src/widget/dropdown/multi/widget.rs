@@ -229,7 +229,7 @@ impl<Item: Clone + PartialEq + 'static> State<Item> {
     /// Creates a new [`State`] for a [`Dropdown`].
     pub fn new() -> Self {
         Self {
-            icon: match icon::from_name("pan-down-symbolic").size(16).handle().data {
+            icon: match icon::bundled::pan_down_symbolic().size(16).handle().data {
                 icon::Data::Name(named) => named
                     .path()
                     .filter(|path| path.extension().is_some_and(|ext| ext == OsStr::new("svg")))
