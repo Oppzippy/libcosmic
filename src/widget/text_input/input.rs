@@ -92,12 +92,21 @@ where
 {
     let spacing = THEME.lock().unwrap().cosmic().space_xxs();
 
+    #[cfg(target_os = "linux")]
+    let icon = crate::widget::icon::from_name("system-search-symbolic")
+        .size(16)
+        .handle();
+    #[cfg(not(target_os = "linux"))]
+    let icon = crate::widget::icon::from_svg_bytes(include_bytes!(
+        "../../../res/icons/system-search-symbolic.svg"
+    ))
+    .symbolic(true);
+
     TextInput::new(placeholder, value)
         .padding([0, spacing])
         .style(crate::theme::TextInput::Search)
         .leading_icon(
-            crate::widget::icon::from_name("system-search-symbolic")
-                .size(16)
+            crate::widget::icon(icon)
                 .apply(crate::widget::container)
                 .padding(8)
                 .into(),
