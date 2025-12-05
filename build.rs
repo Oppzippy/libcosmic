@@ -1,4 +1,4 @@
-use std::env;
+use std::{collections::BTreeMap, env};
 
 fn main() {
     println!("cargo::rerun-if-changed=build.rs");
@@ -32,16 +32,12 @@ fn generate_bundled_icons() {
                     (file_name, path)
                 })
         })
-        .fold(
-            std::collections::BTreeMap::new(),
-            |mut set, (name, path)| {
-                set.insert(name, path);
-                set
-            },
-        )
+        .collect::<BTreeMap<String, String>>()
         .into_iter()
         .fold(String::new(), |mut output, (name, path)| {
-            output.push_str(&format!("    \"{name}\" => include_bytes!(\"{path}\"),\n"));
+            output.push_str(&format!(
+                "    \"{name}\" => include_bytes!(r###\"{path}\"###),\n"
+            ));
             output
         });
 
@@ -52,7 +48,7 @@ fn generate_bundled_icons() {
     ]
     .concat();
 
-    let out_dir = std::env::var_os("OUT_DIR").unwrap();
+    let out_dir = env::var_os("OUT_DIR").unwrap();
     let out_file = std::path::Path::new(&out_dir).join("bundled_icons.rs");
     std::fs::write(&out_file, &code).unwrap();
 }
